@@ -38,6 +38,7 @@ public class InvoiceRowConfiguration : IEntityTypeConfiguration<InvoiceRow>
         builder.HasOne(i => i.Invoice)
         .WithMany(i => i.Rows)
         .HasForeignKey(i => i.InvoiceId)
-        .IsRequired(false);
+        .OnDelete(DeleteBehavior.Cascade)
+        .IsRequired();
     }
 }

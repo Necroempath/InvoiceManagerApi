@@ -15,10 +15,6 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         .IsRequired()
         .HasMaxLength(100);
 
-        builder.Property(c => c.Address)
-        .IsRequired()
-        .HasMaxLength(200);
-
         builder.Property(c => c.Email)
         .IsRequired()
         .HasMaxLength(100);

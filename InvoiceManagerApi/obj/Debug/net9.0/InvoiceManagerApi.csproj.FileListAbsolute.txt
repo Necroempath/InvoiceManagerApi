@@ -168,3 +168,4 @@ C:\Users\Admin\source\repos\InvoiceManagerApi\InvoiceManagerApi\obj\Debug\net9.0
 C:\Users\Admin\source\repos\InvoiceManagerApi\InvoiceManagerApi\obj\Debug\net9.0\InvoiceManagerApi.pdb
 C:\Users\Admin\source\repos\InvoiceManagerApi\InvoiceManagerApi\obj\Debug\net9.0\InvoiceManagerApi.genruntimeconfig.cache
 C:\Users\Admin\source\repos\InvoiceManagerApi\InvoiceManagerApi\obj\Debug\net9.0\ref\InvoiceManagerApi.dll
+C:\Users\Admin\source\repos\InvoiceManagerApi\InvoiceManagerApi\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

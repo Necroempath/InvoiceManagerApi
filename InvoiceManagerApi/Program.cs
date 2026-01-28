@@ -1,4 +1,7 @@
 using InvoiceManagerApi.Data;
+using InvoiceManagerApi.Mappings;
+using InvoiceManagerApi.Services.Implementations;
+using InvoiceManagerApi.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,17 +12,25 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+builder.Services.AddSwaggerGen();
+
 var connectionString = builder.Configuration
     .GetConnectionString("Default");
 
 builder.Services.AddDbContext<InvoiceManagerDbContext>(option => 
     option.UseSqlServer(connectionString));
 
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseSwagger();
+    app.UseSwaggerUI();
     app.MapOpenApi();
 }
 
