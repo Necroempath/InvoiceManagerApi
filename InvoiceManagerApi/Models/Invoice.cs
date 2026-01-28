@@ -1,29 +1,20 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using InvoiceManagerApi.Enums;
 
 namespace InvoiceManagerApi.Models;
 
 public class Invoice
 {
     public int Id { get; set; }
-    public int CustomerId { get; set; }
-    public Customer? Customer { get; set; }
     public DateTimeOffset StartDate { get; set; }
     public DateTimeOffset EndDate { get; set; }
     public IEnumerable<InvoiceRow> Rows { get; set; } = [];
     public decimal TotalSum { get; set; }
-    public string Comment { get; set; } = string.Empty;
+    public string? Comment { get; set; }
     public InvoiceStatus Status { get; set; } = InvoiceStatus.Created;
     public DateTimeOffset CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTimeOffset? UpdatedAt { get; set; }
     public DateTimeOffset? DeletedAt { get; set; }
-}
 
-public enum InvoiceStatus
-{
-    Created, 
-    Sent, 
-    Received, 
-    Paid, 
-    Cancelled, 
-    Rejected
+    public int CustomerId { get; set; }
+    public Customer? Customer { get; set; }
 }
