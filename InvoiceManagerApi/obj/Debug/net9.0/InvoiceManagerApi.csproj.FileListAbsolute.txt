@@ -170,3 +170,5 @@ C:\Users\Admin\source\repos\InvoiceManagerApi\InvoiceManagerApi\obj\Debug\net9.0
 C:\Users\Admin\source\repos\InvoiceManagerApi\InvoiceManagerApi\obj\Debug\net9.0\ref\InvoiceManagerApi.dll
 C:\Users\Admin\source\repos\InvoiceManagerApi\InvoiceManagerApi\obj\Debug\net9.0\InvoiceManagerApi.sourcelink.json
 C:\Users\Admin\source\repos\InvoiceManagerApi\InvoiceManagerApi\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+C:\Users\Admin\source\repos\InvoiceManagerApi\InvoiceManagerApi\bin\Debug\net9.0\InvoiceManagerApi.xml
+C:\Users\Admin\source\repos\InvoiceManagerApi\InvoiceManagerApi\obj\Debug\net9.0\InvoiceManagerApi.xml

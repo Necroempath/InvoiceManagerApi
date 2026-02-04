@@ -1,0 +1,258 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InvoiceManagerApi</name>
+    </assembly>
+    <members>
+        <member name="M:InvoiceManagerApi.Controllers.CustomerController.GetAll">
+            <summary>
+            Retrieves all customers.
+            </summary>
+            <remarks>
+            Returns a list of all customers that are not soft-deleted.
+            </remarks>
+            <returns>
+            A list of customers.
+            </returns>
+            <response code="200">Customers were successfully retrieved.</response>
+        </member>
+        <member name="M:InvoiceManagerApi.Controllers.CustomerController.GetById(System.Int32)">
+            <summary>
+            Retrieves a customer by its identifier.
+            </summary>
+            <param name="id">The unique identifier of the customer.</param>
+            <returns>
+            The requested customer.
+            </returns>
+            <response code="200">Customer was successfully retrieved.</response>
+            <response code="404">Customer with the specified id was not found.</response>
+        </member>
+        <member name="M:InvoiceManagerApi.Controllers.CustomerController.Create(InvoiceManagerApi.DTOs.CustomerDTOs.CustomerCreateRequest)">
+            <summary>
+            Creates a new customer.
+            </summary>
+            <param name="request">Customer creation data.</param>
+            <returns>
+            The newly created customer.
+            </returns>
+            <response code="201">Customer was successfully created.</response>
+            <response code="400">The request body is invalid.</response>
+        </member>
+        <member name="M:InvoiceManagerApi.Controllers.CustomerController.DeleteSoft(System.Int32)">
+            <summary>
+            Soft deletes a customer.
+            </summary>
+            <remarks>
+            Marks the customer as deleted without removing it from the database.
+            </remarks>
+            <param name="id">The unique identifier of the customer.</param>
+            <response code="200">Customer was successfully soft deleted.</response>
+            <response code="404">Customer with the specified id was not found.</response>
+        </member>
+        <member name="M:InvoiceManagerApi.Controllers.CustomerController.DeleteHard(System.Int32)">
+            <summary>
+            Permanently deletes a customer.
+            </summary>
+            <remarks>
+            Completely removes the customer from the database.
+            This operation is irreversible.
+            </remarks>
+            <param name="id">The unique identifier of the customer.</param>
+            <response code="200">Customer was successfully permanently deleted.</response>
+            <response code="404">Customer with the specified id was not found.</response>
+        </member>
+        <member name="M:InvoiceManagerApi.Controllers.CustomerController.Update(System.Int32,InvoiceManagerApi.DTOs.CustomerDTOs.CustomerUpdateRequest)">
+            <summary>
+            Updates an existing customer.
+            </summary>
+            <param name="id">The unique identifier of the customer.</param>
+            <param name="request">Updated customer data.</param>
+            <returns>
+            The updated customer.
+            </returns>
+            <response code="200">Customer was successfully updated.</response>
+            <response code="404">Customer with the specified id was not found.</response>
+        </member>
+        <member name="T:InvoiceManagerApi.DTOs.CustomerDTOs.CustomerCreateRequest">
+            <summary>
+            DTO for Customer creation. Uses for POST requests
+            </summary>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.CustomerDTOs.CustomerCreateRequest.Name">
+            <summary>
+            Customer Name
+            </summary>
+            <example>John</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.CustomerDTOs.CustomerCreateRequest.Email">
+            <summary>
+            Customer Email
+            </summary>
+            <example>your@email.com</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.CustomerDTOs.CustomerCreateRequest.Address">
+            <summary>
+            Customer Address
+            </summary>
+            <example>Baku, Nizami St. 12</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.CustomerDTOs.CustomerCreateRequest.PhoneNumber">
+            <summary>
+            Customer Phone Number
+            </summary>
+            <example>+9946661135</example>
+        </member>
+        <member name="T:InvoiceManagerApi.DTOs.CustomerDTOs.CustomerResponseDto">
+            <summary>
+            DTO for returned Customer data. Uses for GET requests
+            </summary>
+        </member>
+        <member name="M:InvoiceManagerApi.DTOs.CustomerDTOs.CustomerResponseDto.#ctor">
+            <summary>
+            DTO for returned Customer data. Uses for GET requests
+            </summary>
+        </member>
+        <member name="T:InvoiceManagerApi.DTOs.CustomerDTOs.CustomerUpdateRequest">
+            <summary>
+            DTO for updating Customer. Uses for PUT request 
+            </summary>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.CustomerDTOs.CustomerUpdateRequest.Name">
+            <summary>
+            Customer Name
+            </summary>
+            <example>John</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.CustomerDTOs.CustomerUpdateRequest.Email">
+            <summary>
+            Customer Email
+            </summary>
+            <example>your@email.com</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.CustomerDTOs.CustomerUpdateRequest.Address">
+            <summary>
+            Customer Address
+            </summary>
+            <example>Baku, Nizami St. 12</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.CustomerDTOs.CustomerUpdateRequest.PhoneNumber">
+            <summary>
+            Customer Phone Number
+            </summary>
+            <example>+9946661135</example>
+        </member>
+        <member name="T:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceCreateRequest">
+            <summary>
+            DTO for Invoice creation. Uses for GET requests
+            </summary>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceCreateRequest.StartDate">
+            <summary>
+            Start date of service
+            </summary>
+            <example>2026-02-04T12:54:27.393Z</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceCreateRequest.EndDate">
+            <summary>
+            End date of service
+            </summary>
+            <example>2026-05-04T12:54:27.393Z</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceCreateRequest.Comment">
+            <summary>
+            Invoice comment
+            </summary>
+            <example>Your comment</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceCreateRequest.CustomerId">
+            <summary>
+            Customer ID
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="T:InvoiceManagerApi.Migrations.First">
+            <inheritdoc />
+        </member>
+        <member name="M:InvoiceManagerApi.Migrations.First.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:InvoiceManagerApi.Migrations.First.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:InvoiceManagerApi.Migrations.First.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:InvoiceManagerApi.Migrations.Second">
+            <inheritdoc />
+        </member>
+        <member name="M:InvoiceManagerApi.Migrations.Second.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:InvoiceManagerApi.Migrations.Second.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:InvoiceManagerApi.Migrations.Second.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:InvoiceManagerApi.Migrations.Third">
+            <inheritdoc />
+        </member>
+        <member name="M:InvoiceManagerApi.Migrations.Third.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:InvoiceManagerApi.Migrations.Third.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:InvoiceManagerApi.Migrations.Third.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:InvoiceManagerApi.Migrations.Fourth">
+            <inheritdoc />
+        </member>
+        <member name="M:InvoiceManagerApi.Migrations.Fourth.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:InvoiceManagerApi.Migrations.Fourth.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:InvoiceManagerApi.Migrations.Fourth.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:InvoiceManagerApi.Migrations.Fifth">
+            <inheritdoc />
+        </member>
+        <member name="M:InvoiceManagerApi.Migrations.Fifth.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:InvoiceManagerApi.Migrations.Fifth.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:InvoiceManagerApi.Migrations.Fifth.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:InvoiceManagerApi.Migrations.Sixth">
+            <inheritdoc />
+        </member>
+        <member name="M:InvoiceManagerApi.Migrations.Sixth.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:InvoiceManagerApi.Migrations.Sixth.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:InvoiceManagerApi.Migrations.Sixth.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:InvoiceManagerApi.Migrations.Seventh">
+            <inheritdoc />
+        </member>
+        <member name="M:InvoiceManagerApi.Migrations.Seventh.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:InvoiceManagerApi.Migrations.Seventh.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:InvoiceManagerApi.Migrations.Seventh.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

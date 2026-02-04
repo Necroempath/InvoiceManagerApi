@@ -1,5 +1,8 @@
 ﻿namespace InvoiceManagerApi.DTOs.CustomerDTOs;
 
+/// <summary>
+/// DTO for returned Customer data. Uses for GET requests
+/// </summary>
 public class CustomerResponseDto()
 {
     public int Id { get; set; }

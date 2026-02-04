@@ -3,6 +3,8 @@ using InvoiceManagerApi.Mappings;
 using InvoiceManagerApi.Services.Implementations;
 using InvoiceManagerApi.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -23,7 +25,35 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(
+    options =>
+    {
+        options.SwaggerDoc("v1", new OpenApiInfo
+        {
+            Version = "v1",
+            Title = "Invoice Manager API",
+            Description = "API for managing invoices. API allows create, change, assign invoices to costumers, as well as adjust their rows",
+            Contact = new OpenApiContact
+            {
+                Name = "Invoice Manager Individia",
+                Email = "sahib.quliyev000@gmail.com"
+            },
+            License = new OpenApiLicense
+            {
+                Name = "MIT License",
+                Url = new Uri("https://mit-license.org/")
+            }
+        });
+
+        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+        if (File.Exists(xmlPath))
+        {
+            options.IncludeXmlComments(xmlPath);
+        }
+        
+    });
 
 var connectionString = builder.Configuration
     .GetConnectionString("Default");
