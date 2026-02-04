@@ -4,7 +4,6 @@ using InvoiceManagerApi.DTOs.InvoiceDTOs;
 using InvoiceManagerApi.Enums;
 using InvoiceManagerApi.Models;
 using InvoiceManagerApi.Services.Interfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace InvoiceManagerApi.Services.Implementations;
@@ -38,7 +37,7 @@ public class InvoiceService : IInvoiceService
     public async Task<bool> DeleteHardAsync(int id)
     {
         Invoice? invoice = await _context.Invoices
-            .FirstOrDefaultAsync(i => i.DeletedAt == null && i.Id == id);
+            .FirstOrDefaultAsync(i => i.DeletedAt == null && i.Id == id && i.Status == InvoiceStatus.Created);
 
         if (invoice is null) return false;
 
@@ -107,7 +106,7 @@ public class InvoiceService : IInvoiceService
         var invoice = await _context.Invoices
                 .Include(i => i.Customer)
                 .Include(i => i.Rows)
-                .FirstOrDefaultAsync(i => i.DeletedAt == null && i.Id == id);
+                .FirstOrDefaultAsync(i => i.DeletedAt == null && i.Id == id && i.Status == InvoiceStatus.Created);
 
         if (invoice is null) return null;
 

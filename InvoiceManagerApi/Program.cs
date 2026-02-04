@@ -33,6 +33,7 @@ builder.Services.AddDbContext<InvoiceManagerDbContext>(option =>
 
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+builder.Services.AddScoped<IInvoiceRowService, InvoiceRowService>();
 
 var app = builder.Build();
 

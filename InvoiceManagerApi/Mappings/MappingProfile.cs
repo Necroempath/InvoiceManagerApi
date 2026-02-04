@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using InvoiceManagerApi.DTOs.CustomerDTOs;
 using InvoiceManagerApi.DTOs.InvoiceDTOs;
+using InvoiceManagerApi.DTOs.InvoiceRowDTOs;
 using InvoiceManagerApi.Enums;
 using InvoiceManagerApi.Models;
 
@@ -17,7 +18,7 @@ public class MappingProfile : Profile
                 opt => opt.MapFrom(src => src.Invoices.Count()))
             .ForMember(dest => dest.InvoicesSum,
                 opt => opt.MapFrom(src =>
-                    src.Invoices.Sum(i => i.TotalSum)));
+                    src.Invoices.Sum(i => i.Rows.Sum(ir => ir.Sum))));
 
         CreateMap<CustomerCreateRequest, Customer>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -53,12 +54,28 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.DeletedAt, opt => opt.Ignore())
             .ForMember(dest => dest.Customer, opt => opt.Ignore());
 
-        CreateMap<InvoiceUpdateRequest, Invoice>()
+        CreateMap<InvoiceRowUpdateRequest, Invoice>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.Status, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTimeOffset.UtcNow))
             .ForMember(dest => dest.DeletedAt, opt => opt.Ignore())
             .ForMember(dest => dest.Customer, opt => opt.Ignore());
+
+        // Invoice Row
+
+        CreateMap<InvoiceRow, InvoiceRowResponseDto>()
+            .ForMember(dest => dest.InvoiceStatus,
+            opt => opt.MapFrom(src => src.Invoice.Status.ToString()));
+
+        CreateMap<InvoiceRowCreateRequest, InvoiceRow>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.Invoice, opt => opt.Ignore())
+            .ForMember(dest => dest.Sum, opt => opt.MapFrom(src => src.Rate * src.Quantity));
+
+        CreateMap<InvoiceRowUpdateRequest, InvoiceRow>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.Invoice, opt => opt.Ignore())
+            .ForMember(dest => dest.Sum, opt => opt.MapFrom(src => src.Rate * src.Quantity));
     }
 }

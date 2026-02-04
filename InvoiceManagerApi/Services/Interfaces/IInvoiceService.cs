@@ -1,5 +1,4 @@
-﻿using InvoiceManagerApi.DTOs.CustomerDTOs;
-using InvoiceManagerApi.DTOs.InvoiceDTOs;
+﻿using InvoiceManagerApi.DTOs.InvoiceDTOs;
 
 namespace InvoiceManagerApi.Services.Interfaces;
 
