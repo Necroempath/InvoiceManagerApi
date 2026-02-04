@@ -24,9 +24,9 @@ public class InvoiceConfiguration : IEntityTypeConfiguration<Invoice>
             ));
 
         builder.HasOne(i => i.Customer)
-        .WithOne(c => c.Invoice)
-        .HasForeignKey<Invoice>(i => i.CustomerId)
-        .IsRequired(false);
-
+        .WithMany(c => c.Invoices)
+        .HasForeignKey(i => i.CustomerId)
+        .OnDelete(DeleteBehavior.Cascade)
+        .IsRequired();
     }
 }

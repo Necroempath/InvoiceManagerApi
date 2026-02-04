@@ -13,6 +13,5 @@ public class Customer
     public DateTimeOffset? UpdatedAt { get; set; }
     public DateTimeOffset? DeletedAt { get; set; }
 
-    public int InvoiceId { get; set; }
-    public Invoice? Invoice { get; set; }
+    public IEnumerable<Invoice> Invoices { get; set; } = [];
 }   

@@ -32,8 +32,8 @@ public class CustomerService : ICustomerService
     public async Task<IEnumerable<CustomerResponseDto>> GetAllAsync()
     {
         IEnumerable<Customer> customers = await _context.Customers
-            .Where(c => c.DeletedAt != null)
-            .Include(c => c.Invoice)
+            .Where(c => c.DeletedAt == null)
+            .Include(c => c.Invoices)
             .ToListAsync();
 
         return _mapper.Map<IEnumerable<CustomerResponseDto>>(customers);
@@ -42,8 +42,8 @@ public class CustomerService : ICustomerService
     public async Task<CustomerResponseDto?> GetByIdAsync(int id)
     {
         Customer? customer = await _context.Customers
-            .Include(c => c.Invoice)
-            .FirstOrDefaultAsync(c => c.DeletedAt != null && c.Id == id);
+            .Include(c => c.Invoices)
+            .FirstOrDefaultAsync(c => c.DeletedAt == null && c.Id == id);
 
         if (customer is null) return null;
 
@@ -53,7 +53,7 @@ public class CustomerService : ICustomerService
     public async Task<bool> DeleteHardAsync(int id)
     {
         Customer? customer = await _context.Customers
-            .FirstOrDefaultAsync(c => c.DeletedAt != null && c.Id == id);
+            .FirstOrDefaultAsync(c => c.DeletedAt == null && c.Id == id);
 
         if (customer is null) return false;
 
@@ -67,7 +67,7 @@ public class CustomerService : ICustomerService
     public async Task<bool> DeleteSoftAsync(int id)
     {
         Customer? customer = await _context.Customers
-            .FirstOrDefaultAsync(c => c.DeletedAt != null && c.Id == id);
+            .FirstOrDefaultAsync(c => c.DeletedAt == null && c.Id == id);
 
         if (customer is null) return false;
 
@@ -81,8 +81,8 @@ public class CustomerService : ICustomerService
     public async Task<CustomerResponseDto?> UpdateAsync(int id, CustomerUpdateRequest request)
     {
         Customer? customer = await _context.Customers
-            .Include(c => c.Invoice)
-            .FirstOrDefaultAsync(c => c.DeletedAt != null && c.Id == id);
+            .Include(c => c.Invoices)
+            .FirstOrDefaultAsync(c => c.DeletedAt == null && c.Id == id);
 
         if (customer is null) return null;
 

@@ -9,12 +9,11 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         CreateMap<Customer, CustomerResponseDto>()
-            .ForMember(dest => dest.InvoiceStatus,
+            .ForMember(dest => dest.InvoiceCount,
+                opt => opt.MapFrom(src => src.Invoices.Count()))
+            .ForMember(dest => dest.InvoicesSum,
                 opt => opt.MapFrom(src =>
-                    src.Invoice != null ? src.Invoice.Status.ToString() : null))
-            .ForMember(dest => dest.InvoiceSum,
-                opt => opt.MapFrom(src =>
-                    src.Invoice != null ? src.Invoice.TotalSum : (decimal?)null));
+                    src.Invoices.Sum(i => i.TotalSum)));
 
         CreateMap<CustomerCreateRequest, Customer>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
