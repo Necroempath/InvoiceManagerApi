@@ -7,7 +7,7 @@ public class Invoice
     public int Id { get; set; }
     public DateTimeOffset StartDate { get; set; }
     public DateTimeOffset EndDate { get; set; }
-    public IEnumerable<InvoiceRow> Rows { get; set; } = [];
+    public IEnumerable<InvoiceRow> Rows { get; set; } = new List<InvoiceRow>();
     public decimal TotalSum { get; set; }
     public string? Comment { get; set; }
     public InvoiceStatus Status { get; set; } = InvoiceStatus.Created;
