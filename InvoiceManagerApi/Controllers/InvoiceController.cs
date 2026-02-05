@@ -55,6 +55,22 @@ public class InvoiceController : ControllerBase
     }
 
     /// <summary>
+    /// Retrieves invoices by related customer's identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the related customer.</param>
+    /// <returns>
+    /// Returns a list of all invoices that are not soft-deleted.
+    /// </returns>
+    /// <response code="200">Invoices were successfully retrieved.</response>
+    [HttpGet("/customerId/{customerId}")]
+    public async Task<ActionResult<IEnumerable<InvoiceResponseDto>>> GetByCustomerId(int customerId)
+    {
+        var invoices = await _service.GetByCustomerIdAsync(customerId);
+
+        return Ok(invoices);
+    }
+
+    /// <summary>
     /// Creates a new invoice.
     /// </summary>
     /// <param name="request">Invoice creation data.</param>

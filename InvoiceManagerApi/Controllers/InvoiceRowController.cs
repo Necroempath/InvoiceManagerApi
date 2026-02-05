@@ -55,6 +55,22 @@ public class InvoiceRowController : ControllerBase
     }
 
     /// <summary>
+    /// Retrieves invoice rows by related invoice's identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the related invoice.</param>
+    /// <returns>
+    /// Returns a list of all invoice rows that are not soft-deleted.
+    /// </returns>
+    /// <response code="200">Invoice rows were successfully retrieved.</response>
+    [HttpGet("/invoiceId/{invoiceId}")]
+    public async Task<ActionResult<IEnumerable<InvoiceRowResponseDto>>> GetByInvoiceId(int invoiceId)
+    {
+        var invoiceRows = await _service.GetByInvoiceIdAsync(invoiceId);
+
+        return Ok(invoiceRows);
+    }
+
+    /// <summary>
     /// Creates a new invoice row.
     /// </summary>
     /// <param name="request">Invoice row creation data.</param>

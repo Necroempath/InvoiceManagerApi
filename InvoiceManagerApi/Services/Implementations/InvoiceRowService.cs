@@ -66,6 +66,16 @@ public class InvoiceRowService : IInvoiceRowService
         return _mapper.Map<InvoiceRowResponseDto>(invoiceRow);
     }
 
+    public async Task<IEnumerable<InvoiceRowResponseDto>> GetByInvoiceIdAsync(int invoiceId)
+    {
+        var invoiceRows = await _context.InvoiceRows
+            .Where(ir => ir.InvoiceId == invoiceId)
+            .Include(ir => ir.Invoice)
+            .ToListAsync();
+
+        return _mapper.Map<IEnumerable<InvoiceRowResponseDto>>(invoiceRows);
+    }
+
     public async Task<InvoiceRowResponseDto?> UpdateAsync(int id, InvoiceRowUpdateRequest request)
     {
         var invoiceRow = await _context.InvoiceRows

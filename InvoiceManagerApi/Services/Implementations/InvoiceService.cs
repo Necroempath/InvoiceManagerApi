@@ -5,6 +5,7 @@ using InvoiceManagerApi.Enums;
 using InvoiceManagerApi.Models;
 using InvoiceManagerApi.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace InvoiceManagerApi.Services.Implementations;
 
@@ -71,6 +72,17 @@ public class InvoiceService : IInvoiceService
                         .ToListAsync();
 
         return _mapper.Map<IEnumerable<InvoiceResponseDto>>(invoices);
+    }
+
+    public async Task<IEnumerable<InvoiceResponseDto>> GetByCustomerIdAsync(int customerId)
+    {
+        var invoices = await _context.Invoices
+            .Where(i => i.CustomerId == customerId && i.DeletedAt == null)
+            .Include(i => i.Customer)
+            .Include(i => i.Rows)
+            .ToListAsync();
+
+        return _mapper.Map<IEnumerable<InvoiceResponseDto>> (invoices);
     }
 
     public async Task<InvoiceResponseDto?> GetByIdAsync(int id)

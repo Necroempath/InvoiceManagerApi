@@ -6,6 +6,7 @@ public interface IInvoiceService
 {
     Task<IEnumerable<InvoiceResponseDto>> GetAllAsync();
     Task<InvoiceResponseDto?> GetByIdAsync(int id);
+    Task<IEnumerable<InvoiceResponseDto>> GetByCustomerIdAsync(int customerId);
     Task<InvoiceResponseDto?> CreateAsync(InvoiceCreateRequest request);
     Task<InvoiceResponseDto?> UpdateAsync(int id, InvoiceUpdateRequest request);
     Task<InvoiceResponseDto?> StatusChangeAsync(int id, InvoiceStatusChangeRequest status);

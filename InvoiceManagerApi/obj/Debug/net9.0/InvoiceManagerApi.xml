@@ -96,6 +96,16 @@
             <response code="200">Invoice was successfully retrieved.</response>
             <response code="404">Invoice with the specified id was not found.</response>
         </member>
+        <member name="M:InvoiceManagerApi.Controllers.InvoiceController.GetByCustomerId(System.Int32)">
+            <summary>
+            Retrieves invoices by related customer's identifier.
+            </summary>
+            <param name="id">The unique identifier of the related customer.</param>
+            <returns>
+            Returns a list of all invoices that are not soft-deleted.
+            </returns>
+            <response code="200">Invoices were successfully retrieved.</response>
+        </member>
         <member name="M:InvoiceManagerApi.Controllers.InvoiceController.Create(InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceCreateRequest)">
             <summary>
             Creates a new invoice.
@@ -180,6 +190,16 @@
             </returns>
             <response code="200">Invoice row was successfully retrieved.</response>
             <response code="404">Invoice row with the specified id was not found.</response>
+        </member>
+        <member name="M:InvoiceManagerApi.Controllers.InvoiceRowController.GetByInvoiceId(System.Int32)">
+            <summary>
+            Retrieves invoice rows by related invoice's identifier.
+            </summary>
+            <param name="id">The unique identifier of the related invoice.</param>
+            <returns>
+            Returns a list of all invoice rows that are not soft-deleted.
+            </returns>
+            <response code="200">Invoice rows were successfully retrieved.</response>
         </member>
         <member name="M:InvoiceManagerApi.Controllers.InvoiceRowController.Create(InvoiceManagerApi.DTOs.InvoiceRowDTOs.InvoiceRowCreateRequest)">
             <summary>
