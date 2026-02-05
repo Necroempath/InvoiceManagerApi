@@ -73,6 +73,151 @@
             <response code="200">Customer was successfully updated.</response>
             <response code="404">Customer with the specified id was not found.</response>
         </member>
+        <member name="M:InvoiceManagerApi.Controllers.InvoiceController.GetAll">
+            <summary>
+            Retrieves all invoices.
+            </summary>
+            <remarks>
+            Returns a list of all invoices that are not soft-deleted.
+            </remarks>
+            <returns>
+            A list of invoices.
+            </returns>
+            <response code="200">Invoices were successfully retrieved.</response>
+        </member>
+        <member name="M:InvoiceManagerApi.Controllers.InvoiceController.GetById(System.Int32)">
+            <summary>
+            Retrieves an invoice by its identifier.
+            </summary>
+            <param name="id">The unique identifier of the invoice.</param>
+            <returns>
+            The requested invoice.
+            </returns>
+            <response code="200">Invoice was successfully retrieved.</response>
+            <response code="404">Invoice with the specified id was not found.</response>
+        </member>
+        <member name="M:InvoiceManagerApi.Controllers.InvoiceController.Create(InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceCreateRequest)">
+            <summary>
+            Creates a new invoice.
+            </summary>
+            <param name="request">Invoice creation data.</param>
+            <returns>
+            The newly created invoice.
+            </returns>
+            <response code="201">Invoice was successfully created.</response>
+            <response code="400">
+            The request body is invalid or the related customer was not found.
+            </response>
+        </member>
+        <member name="M:InvoiceManagerApi.Controllers.InvoiceController.DeleteSoft(System.Int32)">
+            <summary>
+            Soft deletes an invoice.
+            </summary>
+            <remarks>
+            Marks the invoice as deleted without removing it from the database.
+            </remarks>
+            <param name="id">The unique identifier of the invoice.</param>
+            <response code="200">Invoice was successfully soft deleted.</response>
+            <response code="404">Invoice with the specified id was not found.</response>
+        </member>
+        <member name="M:InvoiceManagerApi.Controllers.InvoiceController.DeleteHard(System.Int32)">
+            <summary>
+            Permanently deletes an invoice.
+            </summary>
+            <remarks>
+            Completely removes the invoice from the database.
+            This operation is irreversible.
+            </remarks>
+            <param name="id">The unique identifier of the invoice.</param>
+            <response code="200">Invoice was successfully permanently deleted.</response>
+            <response code="404">Invoice with the specified id was not found.</response>
+        </member>
+        <member name="M:InvoiceManagerApi.Controllers.InvoiceController.Update(System.Int32,InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceUpdateRequest)">
+            <summary>
+            Updates an existing invoice.
+            </summary>
+            <param name="id">The unique identifier of the invoice.</param>
+            <param name="request">Updated invoice data.</param>
+            <returns>
+            The updated invoice.
+            </returns>
+            <response code="200">Invoice was successfully updated.</response>
+            <response code="404">Invoice with the specified id was not found.</response>
+        </member>
+        <member name="M:InvoiceManagerApi.Controllers.InvoiceController.StatusChange(System.Int32,InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceStatusChangeRequest)">
+            <summary>
+            Changes the status of an existing invoice.
+            </summary>
+            <param name="id">The unique identifier of the invoice.</param>
+            <param name="request">Invoice status change data.</param>
+            <returns>
+            The invoice with the updated status.
+            </returns>
+            <response code="200">Invoice status was successfully updated.</response>
+            <response code="400">
+            Either the invoice id or the provided status is invalid.
+            </response>
+        </member>
+        <member name="M:InvoiceManagerApi.Controllers.InvoiceRowController.GetAll">
+            <summary>
+            Retrieves all invoice rows.
+            </summary>
+            <remarks>
+            Returns a list of all invoice rows.
+            </remarks>
+            <returns>
+            A list of invoice rows.
+            </returns>
+            <response code="200">Invoice rows were successfully retrieved.</response>
+        </member>
+        <member name="M:InvoiceManagerApi.Controllers.InvoiceRowController.GetById(System.Int32)">
+            <summary>
+            Retrieves an invoice row by its identifier.
+            </summary>
+            <param name="id">The unique identifier of the invoice row.</param>
+            <returns>
+            The requested invoice row.
+            </returns>
+            <response code="200">Invoice row was successfully retrieved.</response>
+            <response code="404">Invoice row with the specified id was not found.</response>
+        </member>
+        <member name="M:InvoiceManagerApi.Controllers.InvoiceRowController.Create(InvoiceManagerApi.DTOs.InvoiceRowDTOs.InvoiceRowCreateRequest)">
+            <summary>
+            Creates a new invoice row.
+            </summary>
+            <param name="request">Invoice row creation data.</param>
+            <returns>
+            The newly created invoice row.
+            </returns>
+            <response code="201">Invoice row was successfully created.</response>
+            <response code="400">
+            The request body is invalid or the related invoice was not found.
+            </response>
+        </member>
+        <member name="M:InvoiceManagerApi.Controllers.InvoiceRowController.DeleteHard(System.Int32)">
+            <summary>
+            Permanently deletes an invoice row.
+            </summary>
+            <remarks>
+            Completely removes the invoice row from the database.
+            This operation is irreversible.
+            </remarks>
+            <param name="id">The unique identifier of the invoice row.</param>
+            <response code="200">Invoice row was successfully permanently deleted.</response>
+            <response code="404">Invoice row with the specified id was not found.</response>
+        </member>
+        <member name="M:InvoiceManagerApi.Controllers.InvoiceRowController.Update(System.Int32,InvoiceManagerApi.DTOs.InvoiceRowDTOs.InvoiceRowUpdateRequest)">
+            <summary>
+            Updates an existing invoice row.
+            </summary>
+            <param name="id">The unique identifier of the invoice row.</param>
+            <param name="request">Updated invoice row data.</param>
+            <returns>
+            The updated invoice row.
+            </returns>
+            <response code="200">Invoice row was successfully updated.</response>
+            <response code="404">Invoice row with the specified id was not found.</response>
+        </member>
         <member name="T:InvoiceManagerApi.DTOs.CustomerDTOs.CustomerCreateRequest">
             <summary>
             DTO for Customer creation. Uses for POST requests
@@ -169,6 +314,204 @@
             Customer ID
             </summary>
             <example>1</example>
+        </member>
+        <member name="T:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceResponseDto">
+            <summary>
+            DTO for Invoice response. Used for GET requests.
+            </summary>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceResponseDto.Id">
+            <summary>
+            Unique identifier of the invoice
+            </summary>
+            <example>10</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceResponseDto.StartDate">
+            <summary>
+            Start date of the service period
+            </summary>
+            <example>2026-02-04T12:54:27.393Z</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceResponseDto.EndDate">
+            <summary>
+            End date of the service period
+            </summary>
+            <example>2026-05-04T12:54:27.393Z</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceResponseDto.Status">
+            <summary>
+            Current invoice status
+            </summary>
+            <example>Paid</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceResponseDto.Comment">
+            <summary>
+            Optional invoice comment
+            </summary>
+            <example>Monthly service payment</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceResponseDto.TotalSum">
+            <summary>
+            Total amount of the invoice
+            </summary>
+            <example>1250.75</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceResponseDto.RowsCount">
+            <summary>
+            Number of invoice rows
+            </summary>
+            <example>3</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceResponseDto.CustomerId">
+            <summary>
+            Identifier of the related customer
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceResponseDto.CustomerName">
+            <summary>
+            Name of the customer
+            </summary>
+            <example>John Doe</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceResponseDto.CustomerEmail">
+            <summary>
+            Email address of the customer
+            </summary>
+            <example>john.doe@example.com</example>
+        </member>
+        <member name="T:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceStatusChangeRequest">
+            <summary>
+            DTO for invoice status modify. Uses for PATCH requests
+            </summary>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceStatusChangeRequest.Status">
+            <summary>
+            Invoice status
+            </summary>
+            <example>Sent</example>
+        </member>
+        <member name="T:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceUpdateRequest">
+            <summary>
+            DTO for Invoice update. Used for PUT requests.
+            </summary>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceUpdateRequest.StartDate">
+            <summary>
+            Updated start date of the service period
+            </summary>
+            <example>2026-02-04T12:54:27.393Z</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceUpdateRequest.EndDate">
+            <summary>
+            Updated end date of the service period
+            </summary>
+            <example>2026-05-04T12:54:27.393Z</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceUpdateRequest.Comment">
+            <summary>
+            Updated invoice comment
+            </summary>
+            <example>Updated service period and pricing</example>
+        </member>
+        <member name="T:InvoiceManagerApi.DTOs.InvoiceRowDTOs.InvoiceRowCreateRequest">
+            <summary>
+            DTO for Invoice Row creation. Used for POST requests.
+            </summary>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceRowDTOs.InvoiceRowCreateRequest.Service">
+            <summary>
+            Name or description of the provided service
+            </summary>
+            <example>Web development services</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceRowDTOs.InvoiceRowCreateRequest.Quantity">
+            <summary>
+            Quantity of the provided service
+            </summary>
+            <example>10</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceRowDTOs.InvoiceRowCreateRequest.Rate">
+            <summary>
+            Rate per single service unit
+            </summary>
+            <example>50.00</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceRowDTOs.InvoiceRowCreateRequest.InvoiceId">
+            <summary>
+            Identifier of the related invoice
+            </summary>
+            <example>5</example>
+        </member>
+        <member name="T:InvoiceManagerApi.DTOs.InvoiceRowDTOs.InvoiceRowResponseDto">
+            <summary>
+            DTO for Invoice Row response. Used for GET requests.
+            </summary>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceRowDTOs.InvoiceRowResponseDto.Id">
+            <summary>
+            Unique identifier of the invoice row
+            </summary>
+            <example>15</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceRowDTOs.InvoiceRowResponseDto.Service">
+            <summary>
+            Name or description of the provided service
+            </summary>
+            <example>Web development services</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceRowDTOs.InvoiceRowResponseDto.Quantity">
+            <summary>
+            Quantity of the provided service
+            </summary>
+            <example>8</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceRowDTOs.InvoiceRowResponseDto.Rate">
+            <summary>
+            Rate per single service unit
+            </summary>
+            <example>75.00</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceRowDTOs.InvoiceRowResponseDto.Sum">
+            <summary>
+            Total amount for this invoice row (Quantity × Rate)
+            </summary>
+            <example>600.00</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceRowDTOs.InvoiceRowResponseDto.InvoiceId">
+            <summary>
+            Identifier of the related invoice
+            </summary>
+            <example>5</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceRowDTOs.InvoiceRowResponseDto.InvoiceStatus">
+            <summary>
+            Current status of the related invoice
+            </summary>
+            <example>Draft</example>
+        </member>
+        <member name="T:InvoiceManagerApi.DTOs.InvoiceRowDTOs.InvoiceRowUpdateRequest">
+            <summary>
+            DTO for Invoice Row update. Used for PUT requests.
+            </summary>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceRowDTOs.InvoiceRowUpdateRequest.Service">
+            <summary>
+            Updated name or description of the provided service
+            </summary>
+            <example>Backend API development</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceRowDTOs.InvoiceRowUpdateRequest.Quantity">
+            <summary>
+            Updated quantity of the provided service
+            </summary>
+            <example>12</example>
+        </member>
+        <member name="P:InvoiceManagerApi.DTOs.InvoiceRowDTOs.InvoiceRowUpdateRequest.Rate">
+            <summary>
+            Updated rate per single service unit
+            </summary>
+            <example>80.00</example>
         </member>
         <member name="T:InvoiceManagerApi.Migrations.First">
             <inheritdoc />
