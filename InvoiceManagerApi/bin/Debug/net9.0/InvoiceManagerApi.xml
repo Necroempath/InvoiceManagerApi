@@ -4,6 +4,11 @@
         <name>InvoiceManagerApi</name>
     </assembly>
     <members>
+        <member name="T:InvoiceManagerApi.Common.ApiResponse`1">
+            <summary>
+            Api response wrapper for all data structure server returns
+            </summary>
+        </member>
         <member name="M:InvoiceManagerApi.Controllers.CustomerController.GetAll">
             <summary>
             Retrieves all customers.
@@ -12,7 +17,7 @@
             Returns a list of all customers that are not soft-deleted.
             </remarks>
             <returns>
-            A list of customers.
+            A list of customers wrapped in ApiResponse.
             </returns>
             <response code="200">Customers were successfully retrieved.</response>
         </member>
@@ -22,7 +27,7 @@
             </summary>
             <param name="id">The unique identifier of the customer.</param>
             <returns>
-            The requested customer.
+            The requested customer wrapped in ApiResponse.
             </returns>
             <response code="200">Customer was successfully retrieved.</response>
             <response code="404">Customer with the specified id was not found.</response>
@@ -33,7 +38,7 @@
             </summary>
             <param name="request">Customer creation data.</param>
             <returns>
-            The newly created customer.
+            The newly created customer wrapped in ApiResponse.
             </returns>
             <response code="201">Customer was successfully created.</response>
             <response code="400">The request body is invalid.</response>
@@ -68,7 +73,7 @@
             <param name="id">The unique identifier of the customer.</param>
             <param name="request">Updated customer data.</param>
             <returns>
-            The updated customer.
+            The updated customer wrapped in ApiResponse.
             </returns>
             <response code="200">Customer was successfully updated.</response>
             <response code="404">Customer with the specified id was not found.</response>
@@ -80,9 +85,7 @@
             <remarks>
             Returns a list of all invoices that are not soft-deleted.
             </remarks>
-            <returns>
-            A list of invoices.
-            </returns>
+            <returns>A list of invoices wrapped in ApiResponse.</returns>
             <response code="200">Invoices were successfully retrieved.</response>
         </member>
         <member name="M:InvoiceManagerApi.Controllers.InvoiceController.GetById(System.Int32)">
@@ -90,9 +93,7 @@
             Retrieves an invoice by its identifier.
             </summary>
             <param name="id">The unique identifier of the invoice.</param>
-            <returns>
-            The requested invoice.
-            </returns>
+            <returns>The requested invoice wrapped in ApiResponse.</returns>
             <response code="200">Invoice was successfully retrieved.</response>
             <response code="404">Invoice with the specified id was not found.</response>
         </member>
@@ -100,10 +101,8 @@
             <summary>
             Retrieves invoices by related customer's identifier.
             </summary>
-            <param name="id">The unique identifier of the related customer.</param>
-            <returns>
-            Returns a list of all invoices that are not soft-deleted.
-            </returns>
+            <param name="customerId">The unique identifier of the related customer.</param>
+            <returns>A list of invoices wrapped in ApiResponse.</returns>
             <response code="200">Invoices were successfully retrieved.</response>
         </member>
         <member name="M:InvoiceManagerApi.Controllers.InvoiceController.Create(InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceCreateRequest)">
@@ -111,21 +110,14 @@
             Creates a new invoice.
             </summary>
             <param name="request">Invoice creation data.</param>
-            <returns>
-            The newly created invoice.
-            </returns>
+            <returns>The newly created invoice wrapped in ApiResponse.</returns>
             <response code="201">Invoice was successfully created.</response>
-            <response code="400">
-            The request body is invalid or the related customer was not found.
-            </response>
+            <response code="400">The request body is invalid or the related customer was not found.</response>
         </member>
         <member name="M:InvoiceManagerApi.Controllers.InvoiceController.DeleteSoft(System.Int32)">
             <summary>
             Soft deletes an invoice.
             </summary>
-            <remarks>
-            Marks the invoice as deleted without removing it from the database.
-            </remarks>
             <param name="id">The unique identifier of the invoice.</param>
             <response code="200">Invoice was successfully soft deleted.</response>
             <response code="404">Invoice with the specified id was not found.</response>
@@ -134,10 +126,6 @@
             <summary>
             Permanently deletes an invoice.
             </summary>
-            <remarks>
-            Completely removes the invoice from the database.
-            This operation is irreversible.
-            </remarks>
             <param name="id">The unique identifier of the invoice.</param>
             <response code="200">Invoice was successfully permanently deleted.</response>
             <response code="404">Invoice with the specified id was not found.</response>
@@ -148,9 +136,7 @@
             </summary>
             <param name="id">The unique identifier of the invoice.</param>
             <param name="request">Updated invoice data.</param>
-            <returns>
-            The updated invoice.
-            </returns>
+            <returns>The updated invoice wrapped in ApiResponse.</returns>
             <response code="200">Invoice was successfully updated.</response>
             <response code="404">Invoice with the specified id was not found.</response>
         </member>
@@ -160,13 +146,9 @@
             </summary>
             <param name="id">The unique identifier of the invoice.</param>
             <param name="request">Invoice status change data.</param>
-            <returns>
-            The invoice with the updated status.
-            </returns>
+            <returns>The invoice with the updated status wrapped in ApiResponse.</returns>
             <response code="200">Invoice status was successfully updated.</response>
-            <response code="400">
-            Either the invoice id or the provided status is invalid.
-            </response>
+            <response code="400">Either the invoice id or the provided status is invalid.</response>
         </member>
         <member name="M:InvoiceManagerApi.Controllers.InvoiceRowController.GetAll">
             <summary>
@@ -175,9 +157,7 @@
             <remarks>
             Returns a list of all invoice rows.
             </remarks>
-            <returns>
-            A list of invoice rows.
-            </returns>
+            <returns>A list of invoice rows wrapped in ApiResponse.</returns>
             <response code="200">Invoice rows were successfully retrieved.</response>
         </member>
         <member name="M:InvoiceManagerApi.Controllers.InvoiceRowController.GetById(System.Int32)">
@@ -185,9 +165,7 @@
             Retrieves an invoice row by its identifier.
             </summary>
             <param name="id">The unique identifier of the invoice row.</param>
-            <returns>
-            The requested invoice row.
-            </returns>
+            <returns>The requested invoice row wrapped in ApiResponse.</returns>
             <response code="200">Invoice row was successfully retrieved.</response>
             <response code="404">Invoice row with the specified id was not found.</response>
         </member>
@@ -195,10 +173,8 @@
             <summary>
             Retrieves invoice rows by related invoice's identifier.
             </summary>
-            <param name="id">The unique identifier of the related invoice.</param>
-            <returns>
-            Returns a list of all invoice rows that are not soft-deleted.
-            </returns>
+            <param name="invoiceId">The unique identifier of the related invoice.</param>
+            <returns>A list of invoice rows wrapped in ApiResponse.</returns>
             <response code="200">Invoice rows were successfully retrieved.</response>
         </member>
         <member name="M:InvoiceManagerApi.Controllers.InvoiceRowController.Create(InvoiceManagerApi.DTOs.InvoiceRowDTOs.InvoiceRowCreateRequest)">
@@ -206,22 +182,14 @@
             Creates a new invoice row.
             </summary>
             <param name="request">Invoice row creation data.</param>
-            <returns>
-            The newly created invoice row.
-            </returns>
+            <returns>The newly created invoice row wrapped in ApiResponse.</returns>
             <response code="201">Invoice row was successfully created.</response>
-            <response code="400">
-            The request body is invalid or the related invoice was not found.
-            </response>
+            <response code="400">The request body is invalid or the related invoice was not found.</response>
         </member>
         <member name="M:InvoiceManagerApi.Controllers.InvoiceRowController.DeleteHard(System.Int32)">
             <summary>
             Permanently deletes an invoice row.
             </summary>
-            <remarks>
-            Completely removes the invoice row from the database.
-            This operation is irreversible.
-            </remarks>
             <param name="id">The unique identifier of the invoice row.</param>
             <response code="200">Invoice row was successfully permanently deleted.</response>
             <response code="404">Invoice row with the specified id was not found.</response>
@@ -232,9 +200,7 @@
             </summary>
             <param name="id">The unique identifier of the invoice row.</param>
             <param name="request">Updated invoice row data.</param>
-            <returns>
-            The updated invoice row.
-            </returns>
+            <returns>The updated invoice row wrapped in ApiResponse.</returns>
             <response code="200">Invoice row was successfully updated.</response>
             <response code="404">Invoice row with the specified id was not found.</response>
         </member>

@@ -1,0 +1,1283 @@
+{
+  "openapi": "3.0.4",
+  "info": {
+    "title": "Invoice Manager API",
+    "description": "API for managing invoices. API allows create, change, assign invoices to costumers, as well as adjust their rows",
+    "contact": {
+      "name": "Invoice Manager Individia",
+      "email": "sahib.quliyev000@gmail.com"
+    },
+    "license": {
+      "name": "MIT License",
+      "url": "https://mit-license.org/"
+    },
+    "version": "v1"
+  },
+  "paths": {
+    "/api/Customer": {
+      "get": {
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Retrieves all customers.",
+        "description": "Returns a list of all customers that are not soft-deleted.",
+        "responses": {
+          "200": {
+            "description": "Customers were successfully retrieved.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomerResponseDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomerResponseDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomerResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Creates a new customer.",
+        "requestBody": {
+          "description": "Customer creation data.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerCreateRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerCreateRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerResponseDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerResponseDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerResponseDto"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Customer was successfully created."
+          },
+          "400": {
+            "description": "The request body is invalid."
+          }
+        }
+      }
+    },
+    "/api/Customer/{id}": {
+      "get": {
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Retrieves a customer by its identifier.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of the customer.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Customer was successfully retrieved.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerResponseDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerResponseDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Customer with the specified id was not found."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Updates an existing customer.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of the customer.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Updated customer data.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerUpdateRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerUpdateRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Customer was successfully updated.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerResponseDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerResponseDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Customer with the specified id was not found."
+          }
+        }
+      }
+    },
+    "/api/Customer/soft/{id}": {
+      "delete": {
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Soft deletes a customer.",
+        "description": "Marks the customer as deleted without removing it from the database.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of the customer.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Customer was successfully soft deleted."
+          },
+          "404": {
+            "description": "Customer with the specified id was not found."
+          }
+        }
+      }
+    },
+    "/api/Customer/hard/{id}": {
+      "delete": {
+        "tags": [
+          "Customer"
+        ],
+        "summary": "Permanently deletes a customer.",
+        "description": "Completely removes the customer from the database.\r\nThis operation is irreversible.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of the customer.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Customer was successfully permanently deleted."
+          },
+          "404": {
+            "description": "Customer with the specified id was not found."
+          }
+        }
+      }
+    },
+    "/api/Invoice": {
+      "get": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Retrieves all invoices.",
+        "description": "Returns a list of all invoices that are not soft-deleted.",
+        "responses": {
+          "200": {
+            "description": "Invoices were successfully retrieved.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InvoiceResponseDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InvoiceResponseDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InvoiceResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Creates a new invoice.",
+        "requestBody": {
+          "description": "Invoice creation data.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceCreateRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceCreateRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceResponseDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceResponseDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceResponseDto"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Invoice was successfully created."
+          },
+          "400": {
+            "description": "The request body is invalid or the related customer was not found."
+          }
+        }
+      }
+    },
+    "/api/Invoice/{id}": {
+      "get": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Retrieves an invoice by its identifier.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of the invoice.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invoice was successfully retrieved.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceResponseDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceResponseDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Invoice with the specified id was not found."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Updates an existing invoice.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of the invoice.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Updated invoice data.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceUpdateRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceUpdateRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Invoice was successfully updated.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceResponseDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceResponseDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Invoice with the specified id was not found."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Changes the status of an existing invoice.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of the invoice.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Invoice status change data.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceStatusChangeRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceStatusChangeRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceStatusChangeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Invoice status was successfully updated.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceResponseDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceResponseDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Either the invoice id or the provided status is invalid."
+          }
+        }
+      }
+    },
+    "/customerId/{customerId}": {
+      "get": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Retrieves invoices by related customer's identifier.",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invoices were successfully retrieved.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InvoiceResponseDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InvoiceResponseDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InvoiceResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Invoice/soft/{id}": {
+      "delete": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Soft deletes an invoice.",
+        "description": "Marks the invoice as deleted without removing it from the database.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of the invoice.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invoice was successfully soft deleted."
+          },
+          "404": {
+            "description": "Invoice with the specified id was not found."
+          }
+        }
+      }
+    },
+    "/api/Invoice/hard/{id}": {
+      "delete": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Permanently deletes an invoice.",
+        "description": "Completely removes the invoice from the database.\r\nThis operation is irreversible.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of the invoice.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invoice was successfully permanently deleted."
+          },
+          "404": {
+            "description": "Invoice with the specified id was not found."
+          }
+        }
+      }
+    },
+    "/api/InvoiceRow": {
+      "get": {
+        "tags": [
+          "InvoiceRow"
+        ],
+        "summary": "Retrieves all invoice rows.",
+        "description": "Returns a list of all invoice rows.",
+        "responses": {
+          "200": {
+            "description": "Invoice rows were successfully retrieved.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InvoiceRowResponseDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InvoiceRowResponseDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InvoiceRowResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "InvoiceRow"
+        ],
+        "summary": "Creates a new invoice row.",
+        "requestBody": {
+          "description": "Invoice row creation data.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceRowCreateRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceRowCreateRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceRowCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceRowResponseDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceRowResponseDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceRowResponseDto"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Invoice row was successfully created."
+          },
+          "400": {
+            "description": "The request body is invalid or the related invoice was not found."
+          }
+        }
+      }
+    },
+    "/api/InvoiceRow/{id}": {
+      "get": {
+        "tags": [
+          "InvoiceRow"
+        ],
+        "summary": "Retrieves an invoice row by its identifier.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of the invoice row.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invoice row was successfully retrieved.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceRowResponseDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceRowResponseDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceRowResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Invoice row with the specified id was not found."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "InvoiceRow"
+        ],
+        "summary": "Updates an existing invoice row.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of the invoice row.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Updated invoice row data.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceRowUpdateRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceRowUpdateRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceRowUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Invoice row was successfully updated.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceRowResponseDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceRowResponseDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceRowResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Invoice row with the specified id was not found."
+          }
+        }
+      }
+    },
+    "/invoiceId/{invoiceId}": {
+      "get": {
+        "tags": [
+          "InvoiceRow"
+        ],
+        "summary": "Retrieves invoice rows by related invoice's identifier.",
+        "parameters": [
+          {
+            "name": "invoiceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invoice rows were successfully retrieved.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InvoiceRowResponseDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InvoiceRowResponseDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InvoiceRowResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/InvoiceRow/hard/{id}": {
+      "delete": {
+        "tags": [
+          "InvoiceRow"
+        ],
+        "summary": "Permanently deletes an invoice row.",
+        "description": "Completely removes the invoice row from the database.\r\nThis operation is irreversible.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of the invoice row.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invoice row was successfully permanently deleted."
+          },
+          "404": {
+            "description": "Invoice row with the specified id was not found."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CustomerCreateRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Customer Name",
+            "nullable": true,
+            "example": "John"
+          },
+          "email": {
+            "type": "string",
+            "description": "Customer Email",
+            "nullable": true,
+            "example": "your@email.com"
+          },
+          "address": {
+            "type": "string",
+            "description": "Customer Address",
+            "nullable": true,
+            "example": "Baku, Nizami St. 12"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Customer Phone Number",
+            "nullable": true,
+            "example": "+9946661135"
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO for Customer creation. Uses for POST requests"
+      },
+      "CustomerResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "invoiceCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "invoicesSum": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO for returned Customer data. Uses for GET requests"
+      },
+      "CustomerUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Customer Name",
+            "nullable": true,
+            "example": "John"
+          },
+          "email": {
+            "type": "string",
+            "description": "Customer Email",
+            "nullable": true,
+            "example": "your@email.com"
+          },
+          "address": {
+            "type": "string",
+            "description": "Customer Address",
+            "nullable": true,
+            "example": "Baku, Nizami St. 12"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Customer Phone Number",
+            "nullable": true,
+            "example": "+9946661135"
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO for updating Customer. Uses for PUT request"
+      },
+      "InvoiceCreateRequest": {
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "description": "Start date of service",
+            "format": "date-time",
+            "example": "2026-02-04T12:54:27.393Z"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End date of service",
+            "format": "date-time",
+            "example": "2026-05-04T12:54:27.393Z"
+          },
+          "comment": {
+            "type": "string",
+            "description": "Invoice comment",
+            "nullable": true,
+            "example": "Your comment"
+          },
+          "customerId": {
+            "type": "integer",
+            "description": "Customer ID",
+            "format": "int32",
+            "example": 1
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO for Invoice creation. Uses for GET requests"
+      },
+      "InvoiceResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier of the invoice",
+            "format": "int32",
+            "example": 10
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Start date of the service period",
+            "format": "date-time",
+            "example": "2026-02-04T12:54:27.393Z"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "End date of the service period",
+            "format": "date-time",
+            "example": "2026-05-04T12:54:27.393Z"
+          },
+          "status": {
+            "type": "string",
+            "description": "Current invoice status",
+            "nullable": true,
+            "example": "Paid"
+          },
+          "comment": {
+            "type": "string",
+            "description": "Optional invoice comment",
+            "nullable": true,
+            "example": "Monthly service payment"
+          },
+          "totalSum": {
+            "type": "number",
+            "description": "Total amount of the invoice",
+            "format": "double",
+            "example": 1250,75
+          },
+          "rowsCount": {
+            "type": "integer",
+            "description": "Number of invoice rows",
+            "format": "int32",
+            "example": 3
+          },
+          "customerId": {
+            "type": "integer",
+            "description": "Identifier of the related customer",
+            "format": "int32",
+            "example": 1
+          },
+          "customerName": {
+            "type": "string",
+            "description": "Name of the customer",
+            "nullable": true,
+            "example": "John Doe"
+          },
+          "customerEmail": {
+            "type": "string",
+            "description": "Email address of the customer",
+            "nullable": true,
+            "example": "john.doe@example.com"
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO for Invoice response. Used for GET requests."
+      },
+      "InvoiceRowCreateRequest": {
+        "type": "object",
+        "properties": {
+          "service": {
+            "type": "string",
+            "description": "Name or description of the provided service",
+            "nullable": true,
+            "example": "Web development services"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "Quantity of the provided service",
+            "format": "double",
+            "example": 10
+          },
+          "rate": {
+            "type": "number",
+            "description": "Rate per single service unit",
+            "format": "double",
+            "example": 50
+          },
+          "invoiceId": {
+            "type": "integer",
+            "description": "Identifier of the related invoice",
+            "format": "int32",
+            "example": 5
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO for Invoice Row creation. Used for POST requests."
+      },
+      "InvoiceRowResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier of the invoice row",
+            "format": "int32",
+            "example": 15
+          },
+          "service": {
+            "type": "string",
+            "description": "Name or description of the provided service",
+            "nullable": true,
+            "example": "Web development services"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "Quantity of the provided service",
+            "format": "double",
+            "example": 8
+          },
+          "rate": {
+            "type": "number",
+            "description": "Rate per single service unit",
+            "format": "double",
+            "example": 75
+          },
+          "sum": {
+            "type": "number",
+            "description": "Total amount for this invoice row (Quantity × Rate)",
+            "format": "double",
+            "example": 600
+          },
+          "invoiceId": {
+            "type": "integer",
+            "description": "Identifier of the related invoice",
+            "format": "int32",
+            "example": 5
+          },
+          "invoiceStatus": {
+            "type": "string",
+            "description": "Current status of the related invoice",
+            "nullable": true,
+            "example": "Draft"
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO for Invoice Row response. Used for GET requests."
+      },
+      "InvoiceRowUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "service": {
+            "type": "string",
+            "description": "Updated name or description of the provided service",
+            "nullable": true,
+            "example": "Backend API development"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "Updated quantity of the provided service",
+            "format": "double",
+            "example": 12
+          },
+          "rate": {
+            "type": "number",
+            "description": "Updated rate per single service unit",
+            "format": "double",
+            "example": 80
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO for Invoice Row update. Used for PUT requests."
+      },
+      "InvoiceStatus": {
+        "enum": [
+          "created",
+          "sent",
+          "received",
+          "paid",
+          "cancelled",
+          "rejected"
+        ],
+        "type": "string"
+      },
+      "InvoiceStatusChangeRequest": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/InvoiceStatus"
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO for invoice status modify. Uses for PATCH requests"
+      },
+      "InvoiceUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "description": "Updated start date of the service period",
+            "format": "date-time",
+            "example": "2026-02-04T12:54:27.393Z"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "Updated end date of the service period",
+            "format": "date-time",
+            "example": "2026-05-04T12:54:27.393Z"
+          },
+          "comment": {
+            "type": "string",
+            "description": "Updated invoice comment",
+            "nullable": true,
+            "example": "Updated service period and pricing"
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO for Invoice update. Used for PUT requests."
+      }
+    }
+  }
+}

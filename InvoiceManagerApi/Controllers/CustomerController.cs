@@ -1,4 +1,5 @@
-﻿using InvoiceManagerApi.DTOs.CustomerDTOs;
+﻿using InvoiceManagerApi.Common;
+using InvoiceManagerApi.DTOs.CustomerDTOs;
 using InvoiceManagerApi.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,15 +23,14 @@ public class CustomerController : ControllerBase
     /// Returns a list of all customers that are not soft-deleted.
     /// </remarks>
     /// <returns>
-    /// A list of customers.
+    /// A list of customers wrapped in ApiResponse.
     /// </returns>
     /// <response code="200">Customers were successfully retrieved.</response>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<CustomerResponseDto>>> GetAll()
+    public async Task<ActionResult<ApiResponse<IEnumerable<CustomerResponseDto>>>> GetAll()
     {
         var customers = await _service.GetAllAsync();
-
-        return Ok(customers);
+        return Ok(ApiResponse<IEnumerable<CustomerResponseDto>>.SuccessResponse(customers));
     }
 
     /// <summary>
@@ -38,19 +38,19 @@ public class CustomerController : ControllerBase
     /// </summary>
     /// <param name="id">The unique identifier of the customer.</param>
     /// <returns>
-    /// The requested customer.
+    /// The requested customer wrapped in ApiResponse.
     /// </returns>
     /// <response code="200">Customer was successfully retrieved.</response>
     /// <response code="404">Customer with the specified id was not found.</response>
     [HttpGet("{id}")]
-    public async Task<ActionResult<CustomerResponseDto>> GetById(int id)
+    public async Task<ActionResult<ApiResponse<CustomerResponseDto>>> GetById(int id)
     {
         var customer = await _service.GetByIdAsync(id);
 
         if (customer is null)
-            return NotFound($"Customer by given id {id} not found");
+            return NotFound(ApiResponse<CustomerResponseDto>.ErrorResponse($"Customer by given id {id} not found"));
 
-        return Ok(customer);
+        return Ok(ApiResponse<CustomerResponseDto>.SuccessResponse(customer));
     }
 
     /// <summary>
@@ -58,21 +58,22 @@ public class CustomerController : ControllerBase
     /// </summary>
     /// <param name="request">Customer creation data.</param>
     /// <returns>
-    /// The newly created customer.
+    /// The newly created customer wrapped in ApiResponse.
     /// </returns>
     /// <response code="201">Customer was successfully created.</response>
     /// <response code="400">The request body is invalid.</response>
     [HttpPost]
-    public async Task<ActionResult<CustomerResponseDto>> Create([FromBody] CustomerCreateRequest request)
+    public async Task<ActionResult<ApiResponse<CustomerResponseDto>>> Create([FromBody] CustomerCreateRequest request)
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
+        if (!ModelState.IsValid)
+            return BadRequest(ApiResponse<CustomerResponseDto>.ErrorResponse("Invalid request data"));
 
         var customer = await _service.CreateAsync(request);
 
         return CreatedAtAction(
-                    nameof(GetById),
-                    new { id = customer.Id },
-                    customer);
+            nameof(GetById),
+            new { id = customer.Id },
+            ApiResponse<CustomerResponseDto>.SuccessResponse(customer, "Customer created successfully"));
     }
 
     /// <summary>
@@ -85,14 +86,14 @@ public class CustomerController : ControllerBase
     /// <response code="200">Customer was successfully soft deleted.</response>
     /// <response code="404">Customer with the specified id was not found.</response>
     [HttpDelete("soft/{id}")]
-    public async Task<ActionResult> DeleteSoft(int id)
+    public async Task<ActionResult<ApiResponse<object>>> DeleteSoft(int id)
     {
         bool isDeleted = await _service.DeleteSoftAsync(id);
 
         if (!isDeleted)
-            return NotFound($"Customer by given id {id} not found");
+            return NotFound(ApiResponse<object>.ErrorResponse($"Customer by given id {id} not found"));
 
-        return Ok();
+        return Ok(ApiResponse<object>.SuccessResponse(null, "Customer soft deleted successfully"));
     }
 
     /// <summary>
@@ -106,14 +107,14 @@ public class CustomerController : ControllerBase
     /// <response code="200">Customer was successfully permanently deleted.</response>
     /// <response code="404">Customer with the specified id was not found.</response>
     [HttpDelete("hard/{id}")]
-    public async Task<ActionResult> DeleteHard(int id)
+    public async Task<ActionResult<ApiResponse<object>>> DeleteHard(int id)
     {
         bool isDeleted = await _service.DeleteHardAsync(id);
 
         if (!isDeleted)
-            return NotFound($"Customer by given id {id} not found");
+            return NotFound(ApiResponse<object>.ErrorResponse($"Customer by given id {id} not found"));
 
-        return Ok();
+        return Ok(ApiResponse<object>.SuccessResponse(null, "Customer permanently deleted successfully"));
     }
 
     /// <summary>
@@ -122,18 +123,18 @@ public class CustomerController : ControllerBase
     /// <param name="id">The unique identifier of the customer.</param>
     /// <param name="request">Updated customer data.</param>
     /// <returns>
-    /// The updated customer.
+    /// The updated customer wrapped in ApiResponse.
     /// </returns>
     /// <response code="200">Customer was successfully updated.</response>
     /// <response code="404">Customer with the specified id was not found.</response>
     [HttpPut("{id}")]
-    public async Task<ActionResult<CustomerResponseDto>> Update(int id, [FromBody] CustomerUpdateRequest request)
+    public async Task<ActionResult<ApiResponse<CustomerResponseDto>>> Update(int id, [FromBody] CustomerUpdateRequest request)
     {
         var customer = await _service.UpdateAsync(id, request);
 
         if (customer is null)
-            return NotFound($"Customer by given id {id} not found");
+            return NotFound(ApiResponse<CustomerResponseDto>.ErrorResponse($"Customer by given id {id} not found"));
 
-        return Ok(customer);
+        return Ok(ApiResponse<CustomerResponseDto>.SuccessResponse(customer, "Customer updated successfully"));
     }
 }
