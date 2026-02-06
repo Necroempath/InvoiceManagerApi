@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using InvoiceManagerApi.Common;
 using InvoiceManagerApi.Data;
 using InvoiceManagerApi.DTOs.InvoiceDTOs;
 using InvoiceManagerApi.Enums;
@@ -61,6 +62,34 @@ public class InvoiceService : IInvoiceService
         await _context.SaveChangesAsync();
 
         return true;
+    }
+
+    public async Task<PagedResult<InvoiceResponseDto>> GePagedResultAsync(InvoiceQueryParams queryParams)
+    {
+        queryParams.Validate();
+
+        var query = _context.Invoices
+                    .Where(i => i.DeletedAt == null)
+                    .Include(i => i.Customer)
+                    .Include(i => i.Rows)
+                    .AsQueryable();
+
+        if (queryParams.CutomerId.HasValue)
+            query = query.Where(i => i.CustomerId == queryParams.CutomerId.Value);
+
+        if (!string.IsNullOrEmpty(queryParams.Search))
+            query = query.Where(i => i.Comment.ToLower().Contains(queryParams.Search));
+        
+        if (!string.IsNullOrEmpty(queryParams.Status))
+        {
+            if (Enum.TryParse<InvoiceStatus>(queryParams.Status, out var status))
+            {
+                query = query.Where(i => i.Status == status);
+            }
+        }
+
+        query = query.Where(i => i.TotalSum >= queryParams.MinSum && i.TotalSum >= queryParams.MaxSum);
+
     }
 
     public async Task<IEnumerable<InvoiceResponseDto>> GetAllAsync()
@@ -127,5 +156,13 @@ public class InvoiceService : IInvoiceService
         await _context.SaveChangesAsync();
 
         return _mapper.Map<InvoiceResponseDto>(invoice);
+    }
+
+    private IQueryable<Invoice> ApplySorting(IQueryable<Invoice> query, string sort, string sortDirection)
+    {
+        return sort.ToLower() switch
+        {
+            "comment"
+        }
     }
 }
