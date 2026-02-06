@@ -1,15 +1,41 @@
 [
   {
     "ContainingType": "InvoiceManagerApi.Controllers.CustomerController",
-    "Method": "GetAll",
+    "Method": "GetPaged",
     "RelativePath": "api/Customer",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "Page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Sort",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "SortDirection",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Search",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": [
       {
-        "Type": "InvoiceManagerApi.Common.ApiResponse\u00601[[System.Collections.Generic.IEnumerable\u00601[[InvoiceManagerApi.DTOs.CustomerDTOs.CustomerResponseDto, InvoiceManagerApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Type": "InvoiceManagerApi.Common.ApiResponse\u00601[[InvoiceManagerApi.Common.PagedResult\u00601[[System.Collections.Generic.IEnumerable\u00601[[InvoiceManagerApi.DTOs.CustomerDTOs.CustomerResponseDto, InvoiceManagerApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], InvoiceManagerApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -93,6 +119,26 @@
     "ReturnTypes": [
       {
         "Type": "InvoiceManagerApi.Common.ApiResponse\u00601[[InvoiceManagerApi.DTOs.CustomerDTOs.CustomerResponseDto, InvoiceManagerApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "InvoiceManagerApi.Controllers.CustomerController",
+    "Method": "GetAll",
+    "RelativePath": "api/Customer/all",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "InvoiceManagerApi.Common.ApiResponse\u00601[[System.Collections.Generic.IEnumerable\u00601[[InvoiceManagerApi.DTOs.CustomerDTOs.CustomerResponseDto, InvoiceManagerApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

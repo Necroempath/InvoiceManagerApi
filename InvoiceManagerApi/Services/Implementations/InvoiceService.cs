@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using InvoiceManagerApi.Common;
 using InvoiceManagerApi.Data;
 using InvoiceManagerApi.DTOs.InvoiceDTOs;
 using InvoiceManagerApi.Enums;
@@ -61,6 +62,17 @@ public class InvoiceService : IInvoiceService
         await _context.SaveChangesAsync();
 
         return true;
+    }
+
+    public async Task<PagedResult<IEnumerable<InvoiceResponseDto>>> GePagedResultAsync(InvoiceQueryParams queryParams)
+    {
+        queryParams.Validate();
+
+        var query = _context.Invoices
+                    .Where(i => i.DeletedAt == null)
+                    .Include(i => i.Customer)
+                    .Include(i => i.Rows)
+                    .AsQueryable();
     }
 
     public async Task<IEnumerable<InvoiceResponseDto>> GetAllAsync()
