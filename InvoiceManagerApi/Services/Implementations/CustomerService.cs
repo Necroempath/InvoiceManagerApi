@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using InvoiceManagerApi.Common;
 using InvoiceManagerApi.Data;
 using InvoiceManagerApi.DTOs.CustomerDTOs;
 using InvoiceManagerApi.Models;
@@ -34,7 +35,7 @@ public class CustomerService : ICustomerService
         IEnumerable<Customer> customers = await _context.Customers
             .Where(c => c.DeletedAt == null)
             .Include(c => c.Invoices.Where(i => i.DeletedAt == null))
-                .ThenInclude(i => i.Rows)
+            .ThenInclude(i => i.Rows)
             .ToListAsync();
 
         return _mapper.Map<IEnumerable<CustomerResponseDto>>(customers);
@@ -44,6 +45,7 @@ public class CustomerService : ICustomerService
     {
         Customer? customer = await _context.Customers
             .Include(c => c.Invoices.Where(i => i.DeletedAt == null))
+            .ThenInclude(i => i.Rows)
             .FirstOrDefaultAsync(c => c.DeletedAt == null && c.Id == id);
 
         if (customer is null) return null;
@@ -93,5 +95,56 @@ public class CustomerService : ICustomerService
 
         return _mapper.Map<CustomerResponseDto>(customer);
 
+    }
+
+    public async Task<PagedResult<CustomerResponseDto>> GetPagedResultAsync(CustomerQueryParams queryParams)
+    {
+        queryParams.Validate();
+
+        var query = _context.Customers
+            .Where(c => c.DeletedAt == null)
+            .Include(c => c.Invoices.Where(i => i.DeletedAt == null))
+            .ThenInclude(i => i.Rows)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(queryParams.Search))
+            query = query.Where(c => c.Name.ToLower().Contains(queryParams.Search) || c.Email.ToLower().Contains(queryParams.Search));
+
+        if (!string.IsNullOrEmpty(queryParams.Sort))
+            query = ApplySorting(query, queryParams.Sort, queryParams.SortDirection);
+        else
+            query = query.OrderByDescending(c => c.CreatedAt);
+
+        var totalCount = await query.CountAsync();
+
+        var skip = (queryParams.Page - 1) * queryParams.PageSize;
+
+        var customers = await query.Skip(skip)
+                            .Take(queryParams.PageSize)
+                            .ToListAsync();
+
+        var customersDto = _mapper.Map<IEnumerable<CustomerResponseDto>>(customers);
+
+        return PagedResult<CustomerResponseDto>.Create(
+            customersDto,
+            queryParams.Page,
+            queryParams.PageSize,
+            totalCount);
+    }
+
+    private IQueryable<Customer> ApplySorting(IQueryable<Customer> query, string sort, string sortDirection)
+    {
+        var isDescending = sortDirection.ToLower() == "desc";
+
+        return sort.ToLower() switch
+        {
+            "name" => isDescending ? query.OrderByDescending(c => c.Name) : query.OrderBy(c => c.Name),
+
+            "email" => isDescending ? query.OrderByDescending(c => c.Email) : query.OrderBy(c => c.Email),
+
+            "createdat" => isDescending ? query.OrderByDescending(c => c.CreatedAt) : query.OrderBy(c => c.CreatedAt),
+
+            _ => query.OrderByDescending(c => c.CreatedAt)
+        };
     }
 }

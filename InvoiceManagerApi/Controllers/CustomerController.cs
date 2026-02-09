@@ -26,11 +26,29 @@ public class CustomerController : ControllerBase
     /// A list of customers wrapped in ApiResponse.
     /// </returns>
     /// <response code="200">Customers were successfully retrieved.</response>
-    [HttpGet]
+    [HttpGet("all")]
     public async Task<ActionResult<ApiResponse<IEnumerable<CustomerResponseDto>>>> GetAll()
     {
         var customers = await _service.GetAllAsync();
         return Ok(ApiResponse<IEnumerable<CustomerResponseDto>>.SuccessResponse(customers));
+    }
+
+    /// <summary>
+    /// Retrieves all customers in the page range.
+    /// </summary>
+    /// <remarks>
+    /// Returns a list of all customers in the page range that are not soft-deleted.
+    /// </remarks>
+    /// <returns>
+    /// A list of customers wrapped in ApiResponse.
+    /// </returns>
+    /// <response code="200">Customers were successfully retrieved.</response>
+    [HttpGet]
+    public async Task<ActionResult<ApiResponse<PagedResult<IEnumerable<CustomerResponseDto>>>>> GetPaged([FromQuery]CustomerQueryParams queryParams)
+    {
+        var result = await _service.GetPagedResultAsync(queryParams);
+
+        return Ok(ApiResponse<PagedResult<CustomerResponseDto>>.SuccessResponse(result));
     }
 
     /// <summary>

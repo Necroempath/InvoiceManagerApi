@@ -78,6 +78,7 @@ if (app.Environment.IsDevelopment())
             //options.RoutePrefix = string.Empty;
             options.DisplayRequestDuration();
             options.EnableFilter();
+            options.EnableTryItOutByDefault();
         });
     app.MapOpenApi();
 }

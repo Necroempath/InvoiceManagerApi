@@ -25,11 +25,29 @@ public class InvoiceController : ControllerBase
     /// </remarks>
     /// <returns>A list of invoices wrapped in ApiResponse.</returns>
     /// <response code="200">Invoices were successfully retrieved.</response>
-    [HttpGet]
+    [HttpGet("all")]
     public async Task<ActionResult<ApiResponse<IEnumerable<InvoiceResponseDto>>>> GetAll()
     {
         var invoices = await _service.GetAllAsync();
         return Ok(ApiResponse<IEnumerable<InvoiceResponseDto>>.SuccessResponse(invoices));
+    }
+
+    /// <summary>
+    /// Retrieves all invoices in the page range.
+    /// </summary>
+    /// <remarks>
+    /// Returns a list of all invoices in the page range that are not soft-deleted.
+    /// </remarks>
+    /// <returns>
+    /// A list of invoices wrapped in ApiResponse.
+    /// </returns>
+    /// <response code="200">Invoices were successfully retrieved.</response>
+    [HttpGet]
+    public async Task<ActionResult<ApiResponse<PagedResult<IEnumerable<InvoiceResponseDto>>>>> GetPaged([FromQuery]InvoiceQueryParams queryParams)
+    {
+        var result = await _service.GetPagedResultAsync(queryParams);
+        
+        return Ok(ApiResponse<PagedResult<InvoiceResponseDto>>.SuccessResponse(result));
     }
 
     /// <summary>

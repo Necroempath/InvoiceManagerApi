@@ -64,7 +64,7 @@ public class InvoiceService : IInvoiceService
         return true;
     }
 
-    public async Task<PagedResult<InvoiceResponseDto>> GePagedResultAsync(InvoiceQueryParams queryParams)
+    public async Task<PagedResult<InvoiceResponseDto>> GetPagedResultAsync(InvoiceQueryParams queryParams)
     {
         queryParams.Validate();
 
@@ -73,14 +73,14 @@ public class InvoiceService : IInvoiceService
                     .Include(i => i.Customer)
                     .Include(i => i.Rows)
                     .AsQueryable();
-
-        if (queryParams.CutomerId.HasValue)
-            query = query.Where(i => i.CustomerId == queryParams.CutomerId.Value);
-
-        if (!string.IsNullOrEmpty(queryParams.Search))
-            query = query.Where(i => i.Comment.ToLower().Contains(queryParams.Search));
         
-        if (!string.IsNullOrEmpty(queryParams.Status))
+        if (queryParams.CustomerId.HasValue)
+            query = query.Where(i => i.CustomerId == queryParams.CustomerId.Value);
+        
+        if (!string.IsNullOrWhiteSpace(queryParams.Search))
+             query = query.Where(i => i.Comment != null && i.Comment.ToLower().Contains(queryParams.Search));
+
+        if (!string.IsNullOrWhiteSpace(queryParams.Status))
         {
             if (Enum.TryParse<InvoiceStatus>(queryParams.Status, out var status))
             {
@@ -88,8 +88,28 @@ public class InvoiceService : IInvoiceService
             }
         }
 
-        query = query.Where(i => i.TotalSum >= queryParams.MinSum && i.TotalSum >= queryParams.MaxSum);
+        if (queryParams.MinSum.HasValue)
+            query = query.Where(i => i.TotalSum >= queryParams.MinSum.Value);
 
+        if (queryParams.MaxSum.HasValue)
+            query = query.Where(i => i.TotalSum <= queryParams.MaxSum.Value);
+
+        if (!string.IsNullOrEmpty(queryParams.Sort))
+            query = ApplySorting(query, queryParams.Sort, queryParams.SortDirection);
+        else
+            query = query.OrderByDescending(c => c.CreatedAt);
+
+        var totalCount = await query.CountAsync();
+        
+        var skip = (queryParams.Page - 1) * queryParams.PageSize;
+        
+        var invoices = await query.Skip(skip)
+            .Take(queryParams.PageSize)
+            .ToListAsync();
+        
+        var invoiceDtos = _mapper.Map<IEnumerable<InvoiceResponseDto>>(invoices);
+
+        return PagedResult<InvoiceResponseDto>.Create(invoiceDtos, queryParams.Page, queryParams.PageSize, totalCount);
     }
 
     public async Task<IEnumerable<InvoiceResponseDto>> GetAllAsync()
@@ -156,13 +176,5 @@ public class InvoiceService : IInvoiceService
         await _context.SaveChangesAsync();
 
         return _mapper.Map<InvoiceResponseDto>(invoice);
-    }
-
-    private IQueryable<Invoice> ApplySorting(IQueryable<Invoice> query, string sort, string sortDirection)
-    {
-        return sort.ToLower() switch
-        {
-            "comment"
-        }
     }
 }

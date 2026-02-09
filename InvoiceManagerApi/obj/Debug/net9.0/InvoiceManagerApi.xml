@@ -21,6 +21,18 @@
             </returns>
             <response code="200">Customers were successfully retrieved.</response>
         </member>
+        <member name="M:InvoiceManagerApi.Controllers.CustomerController.GetPaged(InvoiceManagerApi.DTOs.CustomerDTOs.CustomerQueryParams)">
+            <summary>
+            Retrieves all customers in the page range.
+            </summary>
+            <remarks>
+            Returns a list of all customers in the page range that are not soft-deleted.
+            </remarks>
+            <returns>
+            A list of customers wrapped in ApiResponse.
+            </returns>
+            <response code="200">Customers were successfully retrieved.</response>
+        </member>
         <member name="M:InvoiceManagerApi.Controllers.CustomerController.GetById(System.Int32)">
             <summary>
             Retrieves a customer by its identifier.
@@ -86,6 +98,18 @@
             Returns a list of all invoices that are not soft-deleted.
             </remarks>
             <returns>A list of invoices wrapped in ApiResponse.</returns>
+            <response code="200">Invoices were successfully retrieved.</response>
+        </member>
+        <member name="M:InvoiceManagerApi.Controllers.InvoiceController.GetPaged(InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceQueryParams)">
+            <summary>
+            Retrieves all invoices in the page range.
+            </summary>
+            <remarks>
+            Returns a list of all invoices in the page range that are not soft-deleted.
+            </remarks>
+            <returns>
+            A list of invoices wrapped in ApiResponse.
+            </returns>
             <response code="200">Invoices were successfully retrieved.</response>
         </member>
         <member name="M:InvoiceManagerApi.Controllers.InvoiceController.GetById(System.Int32)">
