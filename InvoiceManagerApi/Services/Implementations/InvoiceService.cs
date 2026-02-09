@@ -79,6 +79,7 @@ public class InvoiceService : IInvoiceService
         
         if (!string.IsNullOrWhiteSpace(queryParams.Search))
              query = query.Where(i => i.Comment != null && i.Comment.ToLower().Contains(queryParams.Search));
+
         if (!string.IsNullOrWhiteSpace(queryParams.Status))
         {
             if (Enum.TryParse<InvoiceStatus>(queryParams.Status, out var status))
@@ -86,15 +87,19 @@ public class InvoiceService : IInvoiceService
                 query = query.Where(i => i.Status == status);
             }
         }
-        
-        query = query.Where(i => i.TotalSum >= queryParams.MinSum && i.TotalSum <= queryParams.MaxSum);
-        
+
+        if (queryParams.MinSum.HasValue)
+            query = query.Where(i => i.TotalSum >= queryParams.MinSum.Value);
+
+        if (queryParams.MaxSum.HasValue)
+            query = query.Where(i => i.TotalSum <= queryParams.MaxSum.Value);
+
         if (!string.IsNullOrEmpty(queryParams.Sort))
             query = ApplySorting(query, queryParams.Sort, queryParams.SortDirection);
         else
             query = query.OrderByDescending(c => c.CreatedAt);
-        
-        var totalCount = await _context.Invoices.CountAsync();
+
+        var totalCount = await query.CountAsync();
         
         var skip = (queryParams.Page - 1) * queryParams.PageSize;
         

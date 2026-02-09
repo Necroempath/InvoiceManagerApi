@@ -31,14 +31,16 @@ public class InvoiceController : ControllerBase
         var invoices = await _service.GetAllAsync();
         return Ok(ApiResponse<IEnumerable<InvoiceResponseDto>>.SuccessResponse(invoices));
     }
-    
+
     /// <summary>
-    /// Retrieves all invoices.
+    /// Retrieves all invoices in the page range.
     /// </summary>
     /// <remarks>
-    /// Returns a list of all invoices that are not soft-deleted.
+    /// Returns a list of all invoices in the page range that are not soft-deleted.
     /// </remarks>
-    /// <returns>A list of invoices wrapped in ApiResponse.</returns>
+    /// <returns>
+    /// A list of invoices wrapped in ApiResponse.
+    /// </returns>
     /// <response code="200">Invoices were successfully retrieved.</response>
     [HttpGet]
     public async Task<ActionResult<ApiResponse<PagedResult<IEnumerable<InvoiceResponseDto>>>>> GetPaged([FromQuery]InvoiceQueryParams queryParams)

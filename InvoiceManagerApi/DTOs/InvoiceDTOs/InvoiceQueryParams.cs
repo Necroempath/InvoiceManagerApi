@@ -2,14 +2,14 @@
 
 public class InvoiceQueryParams
 {
-    public int Page { get; set; }
-    public int PageSize { get; set; }
+    public int Page { get; set; } = 1;
+    public int PageSize { get; set; } = 10;
     public string? Sort { get; set; }
     public string? SortDirection { get; set; }
     public string? Search { get; set; }
     public string? Status { get; set; }
-    public decimal MinSum { get; set; }
-    public decimal MaxSum { get; set; } = decimal.MaxValue;
+    public decimal? MinSum { get; set; }
+    public decimal? MaxSum { get; set; }
     public int? CustomerId { get; set; }
 
     public void Validate()

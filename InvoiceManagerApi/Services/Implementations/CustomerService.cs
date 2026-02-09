@@ -102,6 +102,7 @@ public class CustomerService : ICustomerService
         queryParams.Validate();
 
         var query = _context.Customers
+            .Where(c => c.DeletedAt == null)
             .Include(c => c.Invoices.Where(i => i.DeletedAt == null))
             .ThenInclude(i => i.Rows)
             .AsQueryable();
@@ -114,7 +115,7 @@ public class CustomerService : ICustomerService
         else
             query = query.OrderByDescending(c => c.CreatedAt);
 
-        var totalCount = await _context.Customers.CountAsync();
+        var totalCount = await query.CountAsync();
 
         var skip = (queryParams.Page - 1) * queryParams.PageSize;
 
