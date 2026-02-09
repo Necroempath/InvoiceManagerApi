@@ -1,5 +1,6 @@
 ﻿using InvoiceManagerApi.Common;
 using InvoiceManagerApi.DTOs.InvoiceDTOs;
+using InvoiceManagerApi.Models;
 using InvoiceManagerApi.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

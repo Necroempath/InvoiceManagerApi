@@ -177,4 +177,22 @@ public class InvoiceService : IInvoiceService
 
         return _mapper.Map<InvoiceResponseDto>(invoice);
     }
+
+    private IQueryable<Invoice> ApplySorting(IQueryable<Invoice> query, string sort, string sortDirection)
+    {
+        var isDescending = sortDirection.ToLower() == "desc";
+
+        return sort.ToLower() switch
+        {
+            "startdate" => isDescending ? query.OrderByDescending(i => i.StartDate) : query.OrderBy(s => s.StartDate),
+
+            "enddate" => isDescending ? query.OrderByDescending(i => i.EndDate) : query.OrderBy(s => s.EndDate),
+
+            "totalsum" => isDescending ? query.OrderByDescending(i => i.TotalSum) : query.OrderBy(i => i.TotalSum),
+
+            "createdat" => isDescending ? query.OrderByDescending(i => i.CreatedAt) : query.OrderBy(s => s.CreatedAt),
+
+            _ => query.OrderByDescending(i => i.CreatedAt),
+        };
+    }
 }
