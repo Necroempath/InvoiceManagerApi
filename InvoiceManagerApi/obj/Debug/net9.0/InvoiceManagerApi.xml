@@ -100,6 +100,16 @@
             <returns>A list of invoices wrapped in ApiResponse.</returns>
             <response code="200">Invoices were successfully retrieved.</response>
         </member>
+        <member name="M:InvoiceManagerApi.Controllers.InvoiceController.GetPaged(InvoiceManagerApi.DTOs.InvoiceDTOs.InvoiceQueryParams)">
+            <summary>
+            Retrieves all invoices.
+            </summary>
+            <remarks>
+            Returns a list of all invoices that are not soft-deleted.
+            </remarks>
+            <returns>A list of invoices wrapped in ApiResponse.</returns>
+            <response code="200">Invoices were successfully retrieved.</response>
+        </member>
         <member name="M:InvoiceManagerApi.Controllers.InvoiceController.GetById(System.Int32)">
             <summary>
             Retrieves an invoice by its identifier.

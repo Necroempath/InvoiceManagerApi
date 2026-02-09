@@ -10,7 +10,7 @@ public class InvoiceQueryParams
     public string? Status { get; set; }
     public decimal MinSum { get; set; }
     public decimal MaxSum { get; set; } = decimal.MaxValue;
-    public int? CutomerId { get; set; }
+    public int? CustomerId { get; set; }
 
     public void Validate()
     {

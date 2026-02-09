@@ -114,7 +114,7 @@ public class CustomerService : ICustomerService
         else
             query = query.OrderByDescending(c => c.CreatedAt);
 
-            var totalCount = await _context.Customers.CountAsync();
+        var totalCount = await _context.Customers.CountAsync();
 
         var skip = (queryParams.Page - 1) * queryParams.PageSize;
 
@@ -135,7 +135,7 @@ public class CustomerService : ICustomerService
     {
         var isDescending = sortDirection.ToLower() == "desc";
 
-        return sort?.ToLower() switch
+        return sort.ToLower() switch
         {
             "name" => isDescending ? query.OrderByDescending(c => c.Name) : query.OrderBy(c => c.Name),
 
