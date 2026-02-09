@@ -1,7 +1,11 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using InvoiceManagerApi.Data;
+using InvoiceManagerApi.DTOs.CustomerDTOs;
 using InvoiceManagerApi.Mappings;
 using InvoiceManagerApi.Services.Implementations;
 using InvoiceManagerApi.Services.Interfaces;
+using InvoiceManagerApi.Validators.CustomerValidators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
@@ -64,6 +68,10 @@ builder.Services.AddDbContext<InvoiceManagerDbContext>(option =>
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddScoped<IInvoiceRowService, InvoiceRowService>();
+
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
+builder.Services.AddFluentValidationAutoValidation();
 
 var app = builder.Build();
 

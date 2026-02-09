@@ -344,3 +344,6 @@ C:\Users\repo\RiderProjects\InvoiceManagerApi\InvoiceManagerApi\obj\Debug\net9.0
 C:\Users\repo\RiderProjects\InvoiceManagerApi\InvoiceManagerApi\obj\Debug\net9.0\InvoiceM.A90E4548.Up2Date
 C:\Users\repo\RiderProjects\InvoiceManagerApi\InvoiceManagerApi\obj\Debug\net9.0\InvoiceManagerApi.genruntimeconfig.cache
 C:\Users\repo\RiderProjects\InvoiceManagerApi\InvoiceManagerApi\obj\Debug\net9.0\ref\InvoiceManagerApi.dll
+C:\Users\Admin\source\repos\InvoiceManagerApi\InvoiceManagerApi\bin\Debug\net9.0\FluentValidation.dll
+C:\Users\Admin\source\repos\InvoiceManagerApi\InvoiceManagerApi\bin\Debug\net9.0\FluentValidation.AspNetCore.dll
+C:\Users\Admin\source\repos\InvoiceManagerApi\InvoiceManagerApi\bin\Debug\net9.0\FluentValidation.DependencyInjectionExtensions.dll
