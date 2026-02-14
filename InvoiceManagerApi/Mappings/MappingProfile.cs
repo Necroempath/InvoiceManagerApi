@@ -37,8 +37,6 @@ public class MappingProfile : Profile
         CreateMap<Invoice, InvoiceResponseDto>()
             .ForMember(dest => dest.Status,
             opt => opt.MapFrom(src => src.Status.ToString()))
-            .ForMember(dest => dest.TotalSum,
-            opt => opt.MapFrom(src => src.Rows.Sum(ir => ir.Sum)))
             .ForMember(dest => dest.RowsCount,
             opt => opt.MapFrom(src => src.Rows.Count()))
             .ForMember(dest => dest.CustomerName,

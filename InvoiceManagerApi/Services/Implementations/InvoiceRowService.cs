@@ -20,13 +20,15 @@ public class InvoiceRowService : IInvoiceRowService
 
     public async Task<InvoiceRowResponseDto?> CreateAsync(InvoiceRowCreateRequest request)
     {
-        var isInvoiceExists = await _context.Invoices.AnyAsync(c => c.Id == request.InvoiceId);
+        var invoice = await _context.Invoices.FirstOrDefaultAsync(c => c.Id == request.InvoiceId);
 
-        if (!isInvoiceExists) return null;
+        if (invoice is null) return null;
 
         var invoiceRow = _mapper.Map<InvoiceRow>(request);
 
         await _context.InvoiceRows.AddAsync(invoiceRow);
+
+        invoice.TotalSum += request.Quantity * request.Rate;
 
         await _context.SaveChangesAsync();
 
@@ -82,6 +84,12 @@ public class InvoiceRowService : IInvoiceRowService
         .FirstOrDefaultAsync(ir => ir.Id == id);
 
         if (invoiceRow is null) return null;
+
+        var invoice = await _context.Invoices
+            .FirstOrDefaultAsync(i => 
+            i.Rows.Any(ir => ir.Id == id));
+
+        invoice!.TotalSum += (request.Rate * request.Quantity) - invoiceRow.Sum;
 
         _mapper.Map(request, invoiceRow);
 

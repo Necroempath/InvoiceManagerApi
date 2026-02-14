@@ -114,6 +114,8 @@ public class InvoiceService : IInvoiceService
 
     public async Task<IEnumerable<InvoiceResponseDto>> GetAllAsync()
     {
+        await RecalculateAsync();
+
         var invoices = await _context.Invoices
                         .Where(i => i.DeletedAt == null)
                         .Include(i => i.Customer)
@@ -121,6 +123,12 @@ public class InvoiceService : IInvoiceService
                         .ToListAsync();
 
         return _mapper.Map<IEnumerable<InvoiceResponseDto>>(invoices);
+    }
+    private async Task RecalculateAsync()
+    {
+        await _context.Invoices
+            .Include(i => i.Rows)
+            .ForEachAsync(i => i.TotalSum = i.Rows.Sum(ir => ir.Sum));
     }
 
     public async Task<IEnumerable<InvoiceResponseDto>> GetByCustomerIdAsync(int customerId)
